@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recieved Data</title>
+</head>
+
+<body>
+    <h2>Recieved Data</h2>
+    <a href="{% url 'form_view' %}">Go back</a>
+    <form method="POST" action="{% url 'wipe_view' %}" style="margin-top: 15px; margin-bottom: 15px;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Are you sure you want to delete ALL records?');" style="color: red;">
+        Clear All Records
+    </button>
+    </form>
+<hr>
+    <hr>
+
+    {% for item in allData %}
+        <div style="border:5px solid #ffe5c8; padding: 10px; margin-bottom: 10px; border-radius: 10px;">
+            <p><strong>Submitted on:</strong> {{ item.creationDate|date:"Y-m-d H:i:s" }}</p>
+            <p><strong>JSON Data:</strong></p>
+            <pre>{{ item.inputedData }}</pre> 
+        </div>
+    {% empty %}
+        <p>Data is missing</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dynamic form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h2>Dynamic form</h2>
+    <form id="dynamicform" method="POST" action="">
+        {% csrf_token %}
+        <div id="inputcontainer">
+            <div>
+                <input type="text" name="name" placeholder="Enter name here" required>
+            </div>
+        </div>
+        <br>
+        <button type="button" id="addbutton">Add</button>
+        <button type="submit">Submit form</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            let counter = 1;
+            $('#addbutton').click(function(){
+                let newInput = `<div><input type="text" name="name${counter}" placeholder="Enter name ${counter} here"></div>`;
+                $('#inputcontainer').append(newInput); 
+                counter+=1;
+            });
+        
+
+            $('#dynamicform').submit(function(event) {
+                let isValid = true;
+                $('input[type="text"]').each(function() {
+                    if ($.trim($(this).val())=="") {
+                        isValid=false;
+                        $(this).css("border", "2px solid red");
+                    } else {
+                        $(this).css("border", "");
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    alert('Name you are trying to add is empty!')
+                }
+            });
+        });
+    </script>
+</body>
+</html>
