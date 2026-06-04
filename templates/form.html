@@ -22,9 +22,9 @@
 
     <script>
         $(document).ready(function() {
-            let counter = 1;
+            let counter = 2;
             $('#addbutton').click(function(){
-                let newInput = `<div><input type="text" name="name${counter}" placeholder="Enter name ${counter} here"></div>`;
+                let newInput = `<div><input type="text" name="name ${counter}" placeholder="Enter name ${counter} here"></div>`;
                 $('#inputcontainer').append(newInput); 
                 counter+=1;
             });
