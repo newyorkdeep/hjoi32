@@ -92,7 +92,30 @@ python manage.py runserver 0.0.0.0:8000
 
 🎉 **Success!** Open your browser and navigate to `http://localhost:8000/` (or your server's IP address) to access the application.
 
-Screenshots:
+## If you want to make it work with nginx + gunicorn
+
+### Step 1: Database & App Setup
+1.  **Install dependencies**: `sudo apt install python3-pip python3-venv libpq-dev postgresql nginx -y`
+2.  **Setup Database**: Create user/database in PostgreSQL.
+3.  **Setup App**: Clone repo, create venv, and install requirements (`django`, `gunicorn`, `psycopg2-binary`).
+4.  **Configure Settings**: Set `DEBUG = False` and `ALLOWED_HOSTS` in `settings.py`.
+5.  **Prepare App**: Run `python manage.py migrate` and `collectstatic`.
+
+### Step 2: Gunicorn Setup
+Configure systemd for Gunicorn to manage the application process as a service. Detailed configuration steps for the socket and service files can be found in guide {Link: 1.3.2 https://serverstadium.com/knowledge-base/making-your-django-project-production-ready-on-ubuntu-22-04-gunicorn-and-nginx-setup/} and {Link: 1.3.4 https://dev.to/arctype/set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-20-04-74h}.
+
+1.  **Create Socket**: `/etc/systemd/system/gunicorn.socket`
+2.  **Create Service**: `/etc/systemd/system/gunicorn.service`
+3.  **Start Services**: `sudo systemctl start gunicorn.socket` and `sudo systemctl enable gunicorn.socket`
+
+### Step 3: Nginx Reverse Proxy Setup
+Configure Nginx as a reverse proxy to handle static files and forward requests to Gunicorn.
+1.  **Create Nginx Config**: `/etc/nginx/sites-available/your_project`
+2.  **Enable Configuration**: Symlink to `sites-enabled` and restart Nginx.
+3.  **Allow Traffic**: `sudo ufw allow 'Nginx Full'`
+
+# Screenshots:
+
 <img width="877" height="491" alt="image" src="https://github.com/user-attachments/assets/bc9f7964-8635-476b-b923-e4f79206c2f6" />
 <img width="877" height="493" alt="image" src="https://github.com/user-attachments/assets/e5c313a9-5bad-4447-8126-a0ceb9326a28" />
 <img width="875" height="488" alt="image" src="https://github.com/user-attachments/assets/3d3fbcd4-c2ea-45e9-8bff-c0fd4f1c6b72" />
